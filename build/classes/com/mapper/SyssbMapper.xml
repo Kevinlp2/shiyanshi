@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.dao.SyssbMapper">
+    <!--添加-->
+    <insert id="add" parameterType="com.entity.Syssb">
+        insert into sys_sb values (null ,#{sid},#{sbid},#{snum},#{time})
+    </insert>
+
+    <!--修改-->
+    <update id="update" parameterType="com.entity.Syssb">
+        update sys_sb
+        <set>
+            <if test="sid != null">
+                sid = #{sid},
+            </if>
+            <if test="sbid != null">
+                sbid = #{sbid},
+            </if>
+            <if test="snum != null">
+                snum = #{snum},
+            </if>
+            <if test="time != null">
+                time = #{time}
+            </if>
+        </set>
+        where id =#{id}
+    </update>
+
+    <!--删除-->
+    <delete id="delete" parameterType="int">
+        delete from sys_sb where id = #{id}
+    </delete>
+
+    <!--查询-->
+    <select id="getAll" parameterType="java.util.Map" resultType="com.entity.Syssb">
+        select * from sys_sb
+        <where>
+            <if test="id != null">
+                id=#{id}
+            </if>
+            <if test="sid != null">
+                and sid=#{sid}
+            </if>
+            <if test="sbid != null">
+                and sbid=#{sbid}
+            </if>
+            <if test="snum != null">
+                and snum=#{snum}
+            </if>
+            <if test="time != null">
+                and time=#{time}
+            </if>
+        </where>
+    </select>
+
+    <!--分页显示-->
+    <select id="getByPage" parameterType="java.util.Map" resultType="com.entity.Syssb">
+        select * from sys_sb
+        <where>
+            <if test="id != null">
+                id=#{id}
+            </if>
+            <if test="sid != null">
+                and sid=#{sid}
+            </if>
+            <if test="sbid != null">
+                and sbid=#{sbid}
+            </if>
+            <if test="snum != null">
+                and snum=#{snum}
+            </if>
+            <if test="time != null">
+                and time=#{time}
+            </if>
+        </where>
+        <if test="pageno!=null and pageSize!=null">
+            limit #{pageno},#{pageSize}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.ShiYanMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.ShiYan" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="pubtime" property="pubtime" jdbcType="VARCHAR" />
+    <result column="isdel" property="isdel" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="ftype" property="ftype" jdbcType="VARCHAR" />
+    <result column="mstatus" property="mstatus" jdbcType="VARCHAR" />
+    <result column="snum" property="snum" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.entity.ShiYan" extends="BaseResultMap" >
+    <result column="miaoshu" property="miaoshu" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,  name, address, pubtime, isdel, uid,  ftype, mstatus, snum
+  </sql>
+  <sql id="Blob_Column_List" >
+    miaoshu
+  </sql>
+   <select id="getCount"  resultType="int" parameterType="java.util.Map" >
+    select  count(*) from shiyan  where isdel="1" 
+     <if test="name!=null ">
+     and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+     </if>
+      <if test="address != null" >
+       and address = #{address,jdbcType=VARCHAR}
+      </if>
+      <if test="pubtime != null" >
+      and  pubtime = #{pubtime,jdbcType=VARCHAR}
+      </if>
+      <if test="isdel != null" >
+      and  isdel = #{isdel,jdbcType=VARCHAR}
+      </if>
+      <if test="uid != null" >
+       and uid = #{uid,jdbcType=VARCHAR}
+      </if>
+    
+      <if test="ftype != null" >
+      and  ftype = #{ftype,jdbcType=VARCHAR}
+      </if>
+      <if test="mstatus != null" >
+       and mstatus = #{mstatus,jdbcType=VARCHAR}
+      </if>
+      <if test="snum != null" >
+      and  snum = #{snum,jdbcType=INTEGER}
+      </if>
+      <if test="miaoshu != null" >
+       and miaoshu = #{miaoshu,jdbcType=LONGVARCHAR}
+      </if>
+  </select>
+  <select id="getAll"   resultMap="ResultMapWithBLOBs" parameterType="java.util.Map" >
+    select   
+    <include refid="Base_Column_List" />
+   
+     from shiyan where isdel="1"
+     
+     <if test="name!=null ">
+     and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+     </if>
+      <if test="address != null" >
+       and address = #{address,jdbcType=VARCHAR}
+      </if>
+      <if test="pubtime != null" >
+      and  pubtime = #{pubtime,jdbcType=VARCHAR}
+      </if>
+      <if test="isdel != null" >
+      and  isdel = #{isdel,jdbcType=VARCHAR}
+      </if>
+      <if test="uid != null" >
+       and uid = #{uid,jdbcType=VARCHAR}
+      </if>
+     
+      <if test="ftype != null" >
+      and  ftype = #{ftype,jdbcType=VARCHAR}
+      </if>
+      <if test="mstatus != null" >
+       and mstatus = #{mstatus,jdbcType=VARCHAR}
+      </if>
+      <if test="snum != null" >
+      and  snum = #{snum,jdbcType=INTEGER}
+      </if>
+      <if test="miaoshu != null" >
+       and miaoshu = #{miaoshu,jdbcType=LONGVARCHAR}
+      </if>
+     order by pubtime asc;
+  </select> 
+  
+   <select id="getByPage" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+     select 
+     <include refid="Base_Column_List" />
+    from shiyan where isdel="1" 
+      
+     <if test="name!=null ">
+     and name like concat('%',#{name,jdbcType=VARCHAR},'%')
+     </if>
+      <if test="address != null" >
+       and address = #{address,jdbcType=VARCHAR}
+      </if>
+      <if test="pubtime != null" >
+      and  pubtime = #{pubtime,jdbcType=VARCHAR}
+      </if>
+      <if test="isdel != null" >
+      and  isdel = #{isdel,jdbcType=VARCHAR}
+      </if>
+      <if test="uid != null" >
+       and uid = #{uid,jdbcType=VARCHAR}
+      </if>
+     
+      <if test="ftype != null" >
+      and  ftype = #{ftype,jdbcType=VARCHAR}
+      </if>
+      <if test="mstatus != null" >
+       and mstatus = #{mstatus,jdbcType=VARCHAR}
+      </if>
+      <if test="snum != null" >
+      and  snum = #{snum,jdbcType=INTEGER}
+      </if>
+      <if test="miaoshu != null" >
+       and miaoshu = #{miaoshu,jdbcType=LONGVARCHAR}
+      </if>
+      order by pubtime asc 
+     <if test="pageno!=null and pageSize!=null">
+     limit #{pageno},#{pageSize}
+     </if>
+     </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from shiyan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  	delete from shiyan where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.entity.ShiYan" >
+    insert into shiyan (id,  
+      name, address, pubtime, 
+      isdel, uid, ftype, mstatus, 
+      snum, miaoshu)
+    values (#{id,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{pubtime,jdbcType=VARCHAR}, 
+      #{isdel,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR},  #{ftype,jdbcType=VARCHAR}, #{mstatus,jdbcType=VARCHAR}, 
+      #{snum,jdbcType=INTEGER}, #{miaoshu,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.ShiYan" >
+    insert into shiyan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="pubtime != null" >
+        pubtime,
+      </if>
+      <if test="isdel != null" >
+        isdel,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      
+      <if test="ftype != null" >
+        ftype,
+      </if>
+      <if test="mstatus != null" >
+        mstatus,
+      </if>
+      <if test="snum != null" >
+        snum,
+      </if>
+      <if test="miaoshu != null" >
+        miaoshu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="pubtime != null" >
+        #{pubtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null" >
+        #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="ftype != null" >
+        #{ftype,jdbcType=VARCHAR},
+      </if>
+      <if test="mstatus != null" >
+        #{mstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="snum != null" >
+        #{snum,jdbcType=INTEGER},
+      </if>
+      <if test="miaoshu != null" >
+        #{miaoshu,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.entity.ShiYan" >
+    update shiyan
+    <set >
+     
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="pubtime != null" >
+        pubtime = #{pubtime,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null" >
+        isdel = #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="ftype != null" >
+        ftype = #{ftype,jdbcType=VARCHAR},
+      </if>
+      <if test="mstatus != null" >
+        mstatus = #{mstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="snum != null" >
+        snum = #{snum,jdbcType=INTEGER},
+      </if>
+      <if test="miaoshu != null" >
+        miaoshu = #{miaoshu,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.entity.ShiYan" >
+    update shiyan
+    set name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      pubtime = #{pubtime,jdbcType=VARCHAR},
+      isdel = #{isdel,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR},
+      ftype = #{ftype,jdbcType=VARCHAR},
+      mstatus = #{mstatus,jdbcType=VARCHAR},
+      snum = #{snum,jdbcType=INTEGER},
+      miaoshu = #{miaoshu,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.entity.ShiYan" >
+    update shiyan
+    set  name = #{name,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      pubtime = #{pubtime,jdbcType=VARCHAR},
+      isdel = #{isdel,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=VARCHAR},
+      ftype = #{ftype,jdbcType=VARCHAR},
+      mstatus = #{mstatus,jdbcType=VARCHAR},
+      snum = #{snum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
