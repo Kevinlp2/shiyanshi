@@ -30,13 +30,14 @@
 	</environments> -->
 	<!-- 导入映射文件 -->
    <mappers>
-   <mapper  resource="com/mapper/SysuserMapper.xml"/>
-   <mapper resource="com/mapper/SyssbMapper.xml"/>
-   <mapper  resource="com/mapper/ShiYanMapper.xml"/>
-   <mapper  resource="com/mapper/ForderMapper.xml"/> 
-   
-   
-  <!--  <package name="com.mapper" /> -->
+       <mapper  resource="com/mapper/SysuserMapper.xml"/>
+      <mapper resource="com/mapper/SyssbMapper.xml"/>
+    <mapper  resource="com/mapper/ShiYanMapper.xml"/>
+    <mapper  resource="com/mapper/ForderMapper.xml"/>
+      <mapper  resource="com/mapper/SbbxMapper.xml"/>
+      <mapper  resource="com/mapper/SbbfMapper.xml"/>
+
+      <!--  <package name="com.mapper" /> -->
    
    </mappers>
 

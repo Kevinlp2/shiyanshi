@@ -55,20 +55,20 @@
                                 </c:if>
                             </c:forEach>
                         </td>
-                        <td>
+                        <td style="width: 200px">
                             <c:forEach items="${syssbs}" var="sy">
                                 <c:if test="${sy.sbid == yp.id}">
                                     ${sy.time}
                                 </c:if>
                             </c:forEach>
                         </td>
-                        <td>
+                        <td style="width: 500px">
                             <div class="button-group">
                                 <c:if test="${sessionScope.auser.utype=='实验室管理员' }">
-                                    <a class="button border-main" href="SheBeiwx.do?id=${yp.id }"><span
-                                            class="icon-edit"></span>维修</a>
-                                    <a class="button border-red" href="SheBeibf.do?id=${yp.id }"
-                                       onclick="return del(1,1,1)"><span class="icon-trash-o"></span>报废</a>
+                                    <a class="button border-main" href="SheBeiwx.do?sysid=${sysid }&sbid=${yp.id}">
+                                        <span class="icon-edit"></span>申请维修</a>
+                                    <a class="button border-red" href="SheBeibf.do?sysid=${sysid }&sbid=${yp.id}">
+                                        <span class="icon-trash-o"></span>申请报废</a>
                                 </c:if>
                             </div>
                         </td>

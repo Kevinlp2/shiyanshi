@@ -5,6 +5,7 @@ import java.io.File;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.entity.Syssb;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -197,18 +199,7 @@ public class ShiYanController {
 		return "admin/add_order_sheBei";
 	}
 		
-//		处理申请耗材
-		@RequestMapping("admin/doAddForderHaoCai.do")
-		public String doAddForderHaoCai(ModelMap map,int id){
-			map.put("sy", ShiYanService.getById(id));
-			return "admin/add_order_haoCai";
-		}
-		
-	@RequestMapping("admin/updateSheBei.do")
-	public String updateSheBei(HttpServletRequest request,ShiYan ShiYan){
-		ShiYanService.update(ShiYan);
-		return "redirect:SheBeiList.do";
-	}
+
 //	分页查询
 	@RequestMapping("admin/SheBeiList.do")
 	public String sheBeiList(@RequestParam(value="page",required=false)String page,
@@ -349,4 +340,7 @@ public class ShiYanController {
 		ShiYanService.delete(id);
 		return "redirect:HaoCaiList.do";
 	}
+
+
+
 }

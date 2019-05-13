@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2019-04-02 17:23:54
+Date: 2019-05-13 21:09:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,7 +37,7 @@ CREATE TABLE `forder` (
   KEY `uid` (`uid`),
   CONSTRAINT `forder_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `sysuser` (`uid`),
   CONSTRAINT `forder_ibfk_2` FOREIGN KEY (`fid`) REFERENCES `shiyan` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of forder
@@ -59,6 +59,7 @@ INSERT INTO `forder` VALUES ('74', '17', '31', '1', '审核成功', null, '2019-
 INSERT INTO `forder` VALUES ('75', '17', '33', '27', '审核成功', null, '2019-03-14 09:10:43', null, '设备', '1', '2019-03-14 09:10:43', '4');
 INSERT INTO `forder` VALUES ('76', '17', '34', '27', '审核成功', null, '2019-03-14 09:10:51', null, '设备', '1', '2019-03-14 09:10:52', '4');
 INSERT INTO `forder` VALUES ('77', '17', '34', '29', '审核成功', null, '2019-03-16 10:46:13', null, '设备', '1', '2019-03-16 10:46:13', '5');
+INSERT INTO `forder` VALUES ('78', '19', '1', null, '审核通过', null, '2019-05-13 14:55:42', '2019-05-13 14:56:15', '实验室', '0', '2019-05-13 14:55:42', null);
 
 -- ----------------------------
 -- Table structure for sbbf
@@ -66,18 +67,24 @@ INSERT INTO `forder` VALUES ('77', '17', '34', '29', '审核成功', null, '2019
 DROP TABLE IF EXISTS `sbbf`;
 CREATE TABLE `sbbf` (
   `bid` int(11) NOT NULL AUTO_INCREMENT,
+  `sysid` int(11) NOT NULL,
   `sbid` int(11) DEFAULT NULL,
   `bfsnum` int(11) DEFAULT NULL COMMENT '报废数量',
   `bftime` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '报废时间',
   `bfyy` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '报废原因',
+  `uid` int(11) NOT NULL,
+  `status` varchar(5) COLLATE utf8_bin NOT NULL,
+  `cluid` int(11) DEFAULT NULL,
+  `cltime` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`bid`),
   KEY `sbid` (`sbid`),
   CONSTRAINT `sbbf_ibfk_1` FOREIGN KEY (`sbid`) REFERENCES `shiyan` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of sbbf
 -- ----------------------------
+INSERT INTO `sbbf` VALUES ('1', '26', '32', '2', '2019-05-13 20:43:46', '用不了', '17', '待处理', null, null);
 
 -- ----------------------------
 -- Table structure for sbbx
@@ -85,20 +92,26 @@ CREATE TABLE `sbbf` (
 DROP TABLE IF EXISTS `sbbx`;
 CREATE TABLE `sbbx` (
   `wid` int(11) NOT NULL AUTO_INCREMENT,
-  `sbid` int(11) DEFAULT NULL,
-  `bxyy` varchar(50) COLLATE utf8_bin DEFAULT NULL COMMENT '保修原因',
-  `uid` int(11) DEFAULT NULL COMMENT '保修人id',
+  `sysid` int(11) NOT NULL,
+  `sbid` int(11) NOT NULL,
+  `bxyy` varchar(50) COLLATE utf8_bin NOT NULL COMMENT '保修原因',
+  `uid` int(11) NOT NULL COMMENT '保修人id',
   `bxtime` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '保修时间',
   `bstatus` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `bxnum` int(11) DEFAULT NULL COMMENT '保修数量',
+  `cluid` int(11) DEFAULT NULL COMMENT '处理人Id',
+  `cltime` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '处理时间',
   PRIMARY KEY (`wid`),
   KEY `sbid` (`sbid`),
   CONSTRAINT `sbbx_ibfk_1` FOREIGN KEY (`sbid`) REFERENCES `shiyan` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of sbbx
 -- ----------------------------
+INSERT INTO `sbbx` VALUES ('1', '1', '31', '啊是大', '17', '2019-05-13 20:18:29', '待维修', '1', null, null);
+INSERT INTO `sbbx` VALUES ('2', '21', '31', '磨损严重', '17', '2019-05-13 20:22:18', '待维修', '5', null, null);
+INSERT INTO `sbbx` VALUES ('3', '1', '31', '磨损严重', '17', '2019-05-13 20:39:28', '待维修', '1', null, null);
 
 -- ----------------------------
 -- Table structure for shiyan
@@ -182,10 +195,10 @@ CREATE TABLE `sys_sb` (
 -- ----------------------------
 -- Records of sys_sb
 -- ----------------------------
-INSERT INTO `sys_sb` VALUES ('3', '21', '31', '6', '2019-03-13 20:39:13');
+INSERT INTO `sys_sb` VALUES ('3', '21', '31', '1', '2019-03-13 20:39:13');
 INSERT INTO `sys_sb` VALUES ('6', '1', '23', '2', '2019-03-13 20:39:01');
-INSERT INTO `sys_sb` VALUES ('7', '26', '32', '5', '2019-03-13 20:39:05');
-INSERT INTO `sys_sb` VALUES ('8', '1', '31', '5', '2019-03-13 20:40:02');
+INSERT INTO `sys_sb` VALUES ('7', '26', '32', '3', '2019-03-13 20:39:05');
+INSERT INTO `sys_sb` VALUES ('8', '1', '31', '4', '2019-03-13 20:40:02');
 INSERT INTO `sys_sb` VALUES ('9', '27', '33', '4', '2019-03-14 09:11:05');
 INSERT INTO `sys_sb` VALUES ('10', '27', '34', '4', '2019-03-14 09:11:08');
 INSERT INTO `sys_sb` VALUES ('11', '29', '34', '5', '2019-03-16 10:46:49');

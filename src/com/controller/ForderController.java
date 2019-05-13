@@ -193,7 +193,9 @@ public class ForderController {
 //	申请
 	@RequestMapping("admin/shenQin.do")
 	public String addForder(HttpServletRequest request,Forder yp,HttpSession session,int id){
+		//获取当前用户信息
 		Sysuser u=(Sysuser)session.getAttribute("auser");
+		//获取当前时间
 		Timestamp time=new Timestamp(System.currentTimeMillis());
 		if(u==null){
 			return "admin/login";
@@ -247,12 +249,52 @@ public class ForderController {
 		session.setAttribute("p", 1);
 		return "admin/list_order_sheBei";
 		}
-	}	
+	}
+
+	/*设备报修管理*/
+//	分页查询
+	@RequestMapping("admin/sbbxList.do")
+	public String sbbxList(@RequestParam(value="page",required=false)String page,
+								   ModelMap map,HttpSession session){
+		Sysuser u=(Sysuser)session.getAttribute("auser");
+		if(u==null){
+			return "admin/login";
+		}else{
+			if(page==null||page.equals("")){
+				page="1";
+			}
+			PageBean pageBean=new PageBean(Integer.parseInt(page), PageBean.PAGESIZE);
+			Map<String, Object> pmap=new HashMap<String,Object>();
+			Map<String, Object> cmap=new HashMap<String,Object>();
+			pmap.put("pageno", pageBean.getStart());
+			pmap.put("pageSize", pageBean.getPageSize());
+			if(u.getUtype().equals("实验设备管理员")){
+				pmap.put("uid",null);
+				cmap.put("uid",null);
+			}else{
+				pmap.put("uid",u.getUid());
+				cmap.put("uid",u.getUid());
+			}
+			pmap.put("ftype","设备");
+			cmap.put("ftype","设备");
+			int total=orderService.getCount(cmap);
+			pageBean.setTotal(total);
+			List<Forder> list=orderService.getByPage(pmap);
+			map.put("page", pageBean);
+			map.put("list", list);
+			map.put("ulist", userService.getAll(null));
+			map.put("slist", shiYanService.getAll(null));
+			session.setAttribute("p", 1);
+			return "admin/list_order_sheBei";
+		}
+	}
 	
 //	添加设备申请
 	@RequestMapping("admin/addForderSheBei.do")
 	public String addForderSheBei(HttpServletRequest request,Forder yp,HttpSession session){
+		//获取当前登陆用户
 		Sysuser u=(Sysuser)session.getAttribute("auser");
+		//获取的前时间
 		Timestamp time=new Timestamp(System.currentTimeMillis());
 		if(u==null){
 			return "admin/login";
@@ -263,10 +305,8 @@ public class ForderController {
 			}else{
 				syy.setId(yp.getFid());
 				shiYanService.update(syy);
-
 				String sid = request.getParameter( "sid" );
 				System.out.println(sid);
-
 				yp.setUid(u.getUid());
 				yp.setSid( Integer.parseInt(sid) );
 				yp.setStatus("待审核");
@@ -274,7 +314,6 @@ public class ForderController {
 				yp.setFtype("设备");
 				yp.setPubtime(time.toString().substring(0, 19));
 				yp.setStime(time.toString().substring(0, 19));
-
 				orderService.add(yp);
 				return "success";
 			}

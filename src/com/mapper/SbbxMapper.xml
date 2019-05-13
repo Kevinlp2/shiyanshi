@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.SbbxMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.Sbbx" >
+    <id column="wid" property="wid" jdbcType="INTEGER" />
+    <result column="sysid" property="sysid" jdbcType="INTEGER" />
+    <result column="sbid" property="sbid" jdbcType="INTEGER" />
+    <result column="bxyy" property="bxyy" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="bxtime" property="bxtime" jdbcType="VARCHAR" />
+    <result column="bstatus" property="bstatus" jdbcType="VARCHAR" />
+    <result column="bxnum" property="bxnum" jdbcType="INTEGER" />
+    <result column="cluid" property="cluid" jdbcType="INTEGER" />
+    <result column="cltime" property="cltime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    wid, sysid, sbid, bxyy, uid, bxtime, bstatus, bxnum, cluid, cltime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sbbx
+    where wid = #{wid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sbbx
+    where wid = #{wid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.entity.Sbbx" >
+    insert into sbbx (wid, sysid, sbid, 
+      bxyy, uid, bxtime, 
+      bstatus, bxnum, cluid, 
+      cltime)
+    values (#{wid,jdbcType=INTEGER}, #{sysid,jdbcType=INTEGER}, #{sbid,jdbcType=INTEGER}, 
+      #{bxyy,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{bxtime,jdbcType=VARCHAR}, 
+      #{bstatus,jdbcType=VARCHAR}, #{bxnum,jdbcType=INTEGER}, #{cluid,jdbcType=INTEGER}, 
+      #{cltime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.Sbbx" >
+    insert into sbbx
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="wid != null" >
+        wid,
+      </if>
+      <if test="sysid != null" >
+        sysid,
+      </if>
+      <if test="sbid != null" >
+        sbid,
+      </if>
+      <if test="bxyy != null" >
+        bxyy,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="bxtime != null" >
+        bxtime,
+      </if>
+      <if test="bstatus != null" >
+        bstatus,
+      </if>
+      <if test="bxnum != null" >
+        bxnum,
+      </if>
+      <if test="cluid != null" >
+        cluid,
+      </if>
+      <if test="cltime != null" >
+        cltime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="wid != null" >
+        #{wid,jdbcType=INTEGER},
+      </if>
+      <if test="sysid != null" >
+        #{sysid,jdbcType=INTEGER},
+      </if>
+      <if test="sbid != null" >
+        #{sbid,jdbcType=INTEGER},
+      </if>
+      <if test="bxyy != null" >
+        #{bxyy,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bxtime != null" >
+        #{bxtime,jdbcType=VARCHAR},
+      </if>
+      <if test="bstatus != null" >
+        #{bstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="bxnum != null" >
+        #{bxnum,jdbcType=INTEGER},
+      </if>
+      <if test="cluid != null" >
+        #{cluid,jdbcType=INTEGER},
+      </if>
+      <if test="cltime != null" >
+        #{cltime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.entity.Sbbx" >
+    update sbbx
+    <set >
+      <if test="sysid != null" >
+        sysid = #{sysid,jdbcType=INTEGER},
+      </if>
+      <if test="sbid != null" >
+        sbid = #{sbid,jdbcType=INTEGER},
+      </if>
+      <if test="bxyy != null" >
+        bxyy = #{bxyy,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="bxtime != null" >
+        bxtime = #{bxtime,jdbcType=VARCHAR},
+      </if>
+      <if test="bstatus != null" >
+        bstatus = #{bstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="bxnum != null" >
+        bxnum = #{bxnum,jdbcType=INTEGER},
+      </if>
+      <if test="cluid != null" >
+        cluid = #{cluid,jdbcType=INTEGER},
+      </if>
+      <if test="cltime != null" >
+        cltime = #{cltime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where wid = #{wid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.entity.Sbbx" >
+    update sbbx
+    set sysid = #{sysid,jdbcType=INTEGER},
+      sbid = #{sbid,jdbcType=INTEGER},
+      bxyy = #{bxyy,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      bxtime = #{bxtime,jdbcType=VARCHAR},
+      bstatus = #{bstatus,jdbcType=VARCHAR},
+      bxnum = #{bxnum,jdbcType=INTEGER},
+      cluid = #{cluid,jdbcType=INTEGER},
+      cltime = #{cltime,jdbcType=VARCHAR}
+    where wid = #{wid,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAll" resultMap="ResultMapWithBLOBs" parameterType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+
+    from sbbx
+  </select>
+</mapper>

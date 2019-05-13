@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.SbbfMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.Sbbf" >
+    <id column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="sysid" property="sysid" jdbcType="INTEGER" />
+    <result column="sbid" property="sbid" jdbcType="INTEGER" />
+    <result column="bfsnum" property="bfsnum" jdbcType="INTEGER" />
+    <result column="bftime" property="bftime" jdbcType="VARCHAR" />
+    <result column="bfyy" property="bfyy" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="cluid" property="cluid" jdbcType="INTEGER" />
+    <result column="cltime" property="cltime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    bid, sysid, sbid, bfsnum, bftime, bfyy, uid, status, cluid, cltime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sbbf
+    where bid = #{bid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sbbf
+    where bid = #{bid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.entity.Sbbf" >
+    insert into sbbf (bid, sysid, sbid, 
+      bfsnum, bftime, bfyy, 
+      uid, status, cluid, 
+      cltime)
+    values (#{bid,jdbcType=INTEGER}, #{sysid,jdbcType=INTEGER}, #{sbid,jdbcType=INTEGER}, 
+      #{bfsnum,jdbcType=INTEGER}, #{bftime,jdbcType=VARCHAR}, #{bfyy,jdbcType=VARCHAR}, 
+      #{uid,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{cluid,jdbcType=INTEGER}, 
+      #{cltime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.Sbbf" >
+    insert into sbbf
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="sysid != null" >
+        sysid,
+      </if>
+      <if test="sbid != null" >
+        sbid,
+      </if>
+      <if test="bfsnum != null" >
+        bfsnum,
+      </if>
+      <if test="bftime != null" >
+        bftime,
+      </if>
+      <if test="bfyy != null" >
+        bfyy,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="cluid != null" >
+        cluid,
+      </if>
+      <if test="cltime != null" >
+        cltime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="sysid != null" >
+        #{sysid,jdbcType=INTEGER},
+      </if>
+      <if test="sbid != null" >
+        #{sbid,jdbcType=INTEGER},
+      </if>
+      <if test="bfsnum != null" >
+        #{bfsnum,jdbcType=INTEGER},
+      </if>
+      <if test="bftime != null" >
+        #{bftime,jdbcType=VARCHAR},
+      </if>
+      <if test="bfyy != null" >
+        #{bfyy,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="cluid != null" >
+        #{cluid,jdbcType=INTEGER},
+      </if>
+      <if test="cltime != null" >
+        #{cltime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.entity.Sbbf" >
+    update sbbf
+    <set >
+      <if test="sysid != null" >
+        sysid = #{sysid,jdbcType=INTEGER},
+      </if>
+      <if test="sbid != null" >
+        sbid = #{sbid,jdbcType=INTEGER},
+      </if>
+      <if test="bfsnum != null" >
+        bfsnum = #{bfsnum,jdbcType=INTEGER},
+      </if>
+      <if test="bftime != null" >
+        bftime = #{bftime,jdbcType=VARCHAR},
+      </if>
+      <if test="bfyy != null" >
+        bfyy = #{bfyy,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="cluid != null" >
+        cluid = #{cluid,jdbcType=INTEGER},
+      </if>
+      <if test="cltime != null" >
+        cltime = #{cltime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.entity.Sbbf" >
+    update sbbf
+    set sysid = #{sysid,jdbcType=INTEGER},
+      sbid = #{sbid,jdbcType=INTEGER},
+      bfsnum = #{bfsnum,jdbcType=INTEGER},
+      bftime = #{bftime,jdbcType=VARCHAR},
+      bfyy = #{bfyy,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      cluid = #{cluid,jdbcType=INTEGER},
+      cltime = #{cltime,jdbcType=VARCHAR}
+    where bid = #{bid,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>
