@@ -5,6 +5,7 @@ import java.io.File;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +14,13 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.dao.SbbfMapper;
+import com.dao.SbbxMapper;
+import com.dto.SbbfDto;
+import com.dto.SbbxDto;
 import com.entity.*;
 import com.server.SyssbServer;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +42,10 @@ public class ForderController {
 	private ShiYanServer shiYanService;
 	@Resource
 	private SyssbServer syssbServer;
-	
+	@Resource
+	private SbbxMapper sbbxMapper;
+	@Resource
+	private SbbfMapper sbbfMapper;
 
 //	文件上传
 	public String fileUpload(@RequestParam(value="file",required=false)MultipartFile file,
@@ -252,40 +261,139 @@ public class ForderController {
 	}
 
 	/*设备报修管理*/
-//	分页查询
 	@RequestMapping("admin/sbbxList.do")
-	public String sbbxList(@RequestParam(value="page",required=false)String page,
-								   ModelMap map,HttpSession session){
+	public String sbbxList(ModelMap map,HttpSession session){
+		Sysuser u=(Sysuser)session.getAttribute("auser");
+		//获取的前时间
+		Timestamp time=new Timestamp(System.currentTimeMillis());
+		if(u==null){
+			return "admin/login";
+		}else{
+			List<Sbbx> sbbxList = sbbxMapper.getAll();
+			ArrayList<SbbxDto> sbbxDtolist = new ArrayList<>();
+			for (Sbbx s:sbbxList) {
+				SbbxDto sbbxDto = new SbbxDto();
+				BeanUtils.copyProperties( s,sbbxDto );
+				sbbxDto.setSbname( shiYanService.getById( s.getSbid() ).getName());
+				sbbxDto.setSysname( shiYanService.getById( s.getSysid() ).getName() );
+				sbbxDto.setUname( userService.getById( s.getUid() ).getUname());
+				if(s.getCluid()!=null){
+					sbbxDto.setCluname( userService.getById( s.getCluid() ).getUname() );
+				}
+				sbbxDtolist.add( sbbxDto );
+			}
+
+			map.put("sbbxdtolist", sbbxDtolist);
+			return "admin/list_sbbx";
+		}
+	}
+
+	//	设备报修管理中完成维修操作
+	@RequestMapping("admin/sbwcwx.do")
+	public String sbwcwx(HttpSession session,int id){
+		//获取当前登陆用户
+		Sysuser u=(Sysuser)session.getAttribute("auser");
+		//获取的前时间
+		Timestamp time=new Timestamp(System.currentTimeMillis());
+		if(u==null) {
+			return "admin/login";
+		}else {
+			//修改报修表数据状态
+			Sbbx sbbx = sbbxMapper.selectByPrimaryKey( id );
+			sbbx.setBstatus( "完成维修" );
+			sbbx.setCluid( u.getUid() );
+			sbbx.setCltime( time.toString().substring(0, 19) );
+			sbbxMapper.updateByPrimaryKeySelective( sbbx );
+			//修改sys_sb表数据
+			HashMap<String, Object> syssb = new HashMap<>();
+			syssb.put( "sysid",sbbx.getSysid() );
+			syssb.put( "sbid",sbbx.getSbid() );
+
+			List<Syssb> syssbs = syssbServer.getByPage( syssb );
+			Syssb syssb1=null;
+			if(syssbs.size()>0){
+				 syssb1 = syssbs.get( 0 );
+			}
+			syssb1.setSnum( syssb1.getSnum()+sbbx.getBxnum() );
+			syssbServer.update( syssb1 );
+
+			return "success";
+		}
+	}
+
+	//	设备报修管理中报废操作
+	@RequestMapping("admin/baofei.do")
+	public String baofei(HttpSession session,int id){
+		//获取当前登陆用户
+		Sysuser u=(Sysuser)session.getAttribute("auser");
+		//获取的前时间
+		Timestamp time=new Timestamp(System.currentTimeMillis());
+		if(u==null) {
+			return "admin/login";
+		}else {
+			//修改报修表数据状态
+			Sbbx sbbx = sbbxMapper.selectByPrimaryKey( id );
+			sbbx.setBstatus( "直接报废" );
+			sbbx.setCluid( u.getUid() );
+			sbbx.setCltime( time.toString().substring(0, 19) );
+			sbbxMapper.updateByPrimaryKeySelective( sbbx );
+			//将报废数据添加到报废表中
+			Sbbf sbbf = new Sbbf();
+			sbbf.setStatus( "直接报废" );
+			sbbf.setBftime( time.toString().substring( 0,19 ) );
+			sbbf.setUid( u.getUid() );
+			sbbf.setBfsnum( sbbx.getBxnum() );
+			sbbf.setBfyy( sbbx.getBxyy() );
+			sbbf.setSysid( sbbx.getSysid() );
+			sbbf.setSbid( sbbx.getSbid() );
+			sbbf.setCltime( time.toString().substring( 0,19 ) );
+			sbbf.setCluid( u.getUid() );
+			sbbfMapper.insertSelective( sbbf );
+			return "success";
+		}
+	}
+	/*设备报废管理*/
+	@RequestMapping("admin/sbbfList.do")
+	public String sbbfList(ModelMap map,HttpSession session){
 		Sysuser u=(Sysuser)session.getAttribute("auser");
 		if(u==null){
 			return "admin/login";
 		}else{
-			if(page==null||page.equals("")){
-				page="1";
+			List<Sbbf> sbbfList = sbbfMapper.getAll();
+			ArrayList<SbbfDto> sbbfDtolist = new ArrayList<>();
+			for (Sbbf s:sbbfList) {
+				SbbfDto sbbfDto = new SbbfDto();
+				BeanUtils.copyProperties( s,sbbfDto );
+				sbbfDto.setSbname( shiYanService.getById( s.getSbid() ).getName());
+				sbbfDto.setSysname( shiYanService.getById( s.getSysid() ).getName() );
+				sbbfDto.setUname( userService.getById( s.getUid() ).getUname());
+				if(s.getCluid()!=null){
+					sbbfDto.setCluname( userService.getById( s.getCluid() ).getUname() );
+				}
+				sbbfDtolist.add( sbbfDto );
 			}
-			PageBean pageBean=new PageBean(Integer.parseInt(page), PageBean.PAGESIZE);
-			Map<String, Object> pmap=new HashMap<String,Object>();
-			Map<String, Object> cmap=new HashMap<String,Object>();
-			pmap.put("pageno", pageBean.getStart());
-			pmap.put("pageSize", pageBean.getPageSize());
-			if(u.getUtype().equals("实验设备管理员")){
-				pmap.put("uid",null);
-				cmap.put("uid",null);
-			}else{
-				pmap.put("uid",u.getUid());
-				cmap.put("uid",u.getUid());
-			}
-			pmap.put("ftype","设备");
-			cmap.put("ftype","设备");
-			int total=orderService.getCount(cmap);
-			pageBean.setTotal(total);
-			List<Forder> list=orderService.getByPage(pmap);
-			map.put("page", pageBean);
-			map.put("list", list);
-			map.put("ulist", userService.getAll(null));
-			map.put("slist", shiYanService.getAll(null));
-			session.setAttribute("p", 1);
-			return "admin/list_order_sheBei";
+
+			map.put("sbbfdtolist", sbbfDtolist);
+			return "admin/list_sbbf";
+		}
+	}
+
+	@RequestMapping("admin/qrbaofei.do")
+	public String qrbaofei(HttpSession session,int id){
+		//获取当前登陆用户
+		Sysuser u=(Sysuser)session.getAttribute("auser");
+		//获取的前时间
+		Timestamp time=new Timestamp(System.currentTimeMillis());
+		if(u==null) {
+			return "admin/login";
+		}else {
+			Sbbf sbbf = sbbfMapper.selectByPrimaryKey( id );
+			sbbf.setCluid( u.getUid() );
+			sbbf.setCltime( time.toString().substring( 0,19 ) );
+			sbbf.setStatus( "确认报废" );
+
+			sbbfMapper.updateByPrimaryKeySelective( sbbf );
+			return "success";
 		}
 	}
 	

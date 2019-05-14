@@ -18,4 +18,6 @@ public interface SyssbMapper {
 
     //  分页显示
     List<Syssb> getByPage(Map<String, Object> map);
+    //条件查询
+    List<Syssb> select(Map<String, Object> map);
 }

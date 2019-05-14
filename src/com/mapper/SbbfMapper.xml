@@ -149,6 +149,11 @@
       cltime = #{cltime,jdbcType=VARCHAR}
     where bid = #{bid,jdbcType=INTEGER}
   </update>
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
 
+    from sbbf
+  </select>
 
 </mapper>

@@ -35,33 +35,31 @@
             <tr>
                 <th>设备名称</th>
                 <th>所属实验室</th>
-                <th>设备报修人</th>
-                <th>维修数量</th>
-                <th>报修原因</th>
+                <th>设备报废人</th>
+                <th>报废数量</th>
+                <th>报废原因</th>
                 <th>目前状态</th>
-                <th>申请维修时间</th>
-                <th>维修人</th>
-                <th>维修时间</th>
+                <th>申请报废时间</th>
+                <th>处理人</th>
+                <th>处理时间</th>
                 <th width="400">操作</th>
             </tr>
-            <c:forEach items="${sbbxdtolist }" var="list">
+            <c:forEach items="${sbbfdtolist }" var="list">
                 <tr>
                     <td>${list.sbname}</td>
                     <td>${list.sysname}</td>
                     <td>${list.uname}</td>
-                    <td>${list.bxnum }</td>
-                    <td>${list.bxyy }</td>
-                    <td>${list.bstatus }</td>
-                    <td>${list.bxtime }</td>
+                    <td>${list.bfsnum}</td>
+                    <td>${list.bfyy}</td>
+                    <td>${list.status }</td>
+                    <td>${list.bftime }</td>
                     <td>${list.cluname }</td>
                     <td>${list.cltime }</td>
                     <td>
                         <div class="button-group">
-                            <c:if test="${list.bstatus=='待处理' }">
-                                <a class="button border-main" href="sbwcwx.do?id=${list.wid }"><span
-                                        class="icon-edit"></span>完成维修</a>&nbsp;&nbsp;
-                                <a class="button border-red" href="baofei.do?id=${list.wid}"
-                                   onclick="return del(1,1,1)"><span class="icon-trash-o"></span>报废</a>
+                            <c:if test="${list.status=='待处理' }">
+                                <a class="button border-red" href="qrbaofei.do?id=${list.bid}"
+                                   onclick="return del(1,1,1)"><span class="icon-trash-o"></span>确认报废</a>
                             </c:if>
                         </div>
                     </td>

@@ -75,7 +75,7 @@
 					<c:if test="${sessionScope.auser.utype=='实验设备管理员'}">
 						<li><a href="sheBeiForderList.do" target="right"><span class="icon-caret-right"></span>设备记录管理</a></li>
 						<li><a href="sbbxList.do" target="right"><span class="icon-caret-right"></span>设备维修管理</a></li>
-						<li><a href="sheBeiForderList.do" target="right"><span class="icon-caret-right"></span>设备报废管理</a></li>
+						<li><a href="sbbfList.do" target="right"><span class="icon-caret-right"></span>设备报废管理</a></li>
 					</c:if>
 				</c:if>
 			</ul>

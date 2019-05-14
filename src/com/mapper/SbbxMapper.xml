@@ -150,7 +150,7 @@
     where wid = #{wid,jdbcType=INTEGER}
   </update>
 
-  <select id="getAll" resultMap="ResultMapWithBLOBs" parameterType="java.util.Map">
+  <select id="getAll" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
 

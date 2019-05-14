@@ -2,6 +2,8 @@ package com.dao;
 
 import com.entity.Sbbf;
 
+import java.util.List;
+
 public interface SbbfMapper {
     int deleteByPrimaryKey(Integer bid);
 
@@ -14,4 +16,7 @@ public interface SbbfMapper {
     int updateByPrimaryKeySelective(Sbbf record);
 
     int updateByPrimaryKey(Sbbf record);
+
+    //  查询所有信息
+    List<Sbbf> getAll();
 }

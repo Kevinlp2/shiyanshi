@@ -184,6 +184,13 @@ public class ShiYanController {
 		map.put("sy", ShiYanService.getById(id));
 		return "admin/update_SheBei";
 	}
+
+	@RequestMapping("admin/updateSheBei.do")
+	public String updateSheBei(ShiYan shiYan){
+
+		ShiYanService.update( shiYan );
+		return "success";
+	}
 	
 //	处理申请设备
 		@RequestMapping("admin/doAddForderSheBei.do")
